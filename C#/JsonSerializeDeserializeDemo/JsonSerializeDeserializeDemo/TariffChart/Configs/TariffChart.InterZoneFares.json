@@ -1,0 +1,28 @@
+[
+  {
+    "From": {
+      "Id": 1,
+      "Name": "1"
+    },
+    "To": {
+      "Id": 2,
+      "Name": "2"
+    },
+    "Id": 3,
+    "PeakHours": 35,
+    "OffPeakHours": 30
+  },
+  {
+    "From": {
+      "Id": 2,
+      "Name": "2"
+    },
+    "To": {
+      "Id": 1,
+      "Name": "1"
+    },
+    "Id": 4,
+    "PeakHours": 35,
+    "OffPeakHours": 30
+  }
+]

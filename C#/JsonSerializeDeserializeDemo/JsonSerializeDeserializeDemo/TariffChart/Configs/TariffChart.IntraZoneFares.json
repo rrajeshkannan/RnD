@@ -1,0 +1,20 @@
+[
+  {
+    "Zone": {
+      "Id": 1,
+      "Name": "1"
+    },
+    "Id": 1,
+    "PeakHours": 30,
+    "OffPeakHours": 25
+  },
+  {
+    "Zone": {
+      "Id": 2,
+      "Name": "2"
+    },
+    "Id": 2,
+    "PeakHours": 25,
+    "OffPeakHours": 20
+  }
+]

@@ -1,0 +1,28 @@
+[
+  {
+    "Id": 1,
+    "Begin": {
+      "Hour": 9,
+      "Minute": 0,
+      "Second": 0
+    },
+    "End": {
+      "Hour": 11,
+      "Minute": 30,
+      "Second": 0
+    }
+  },
+  {
+    "Id": 2,
+    "Begin": {
+      "Hour": 18,
+      "Minute": 0,
+      "Second": 0
+    },
+    "End": {
+      "Hour": 22,
+      "Minute": 0,
+      "Second": 0
+    }
+  }
+]
