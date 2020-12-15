@@ -5,49 +5,57 @@ using System.Reactive.Linq;
 
 namespace ObservableDemo
 {
-    public class Repository
+    public class Repository<TItem>
     {
-        private class NumberAddedEventArgs : EventArgs
+        private class ItemAddedEventArgs<T> : EventArgs
         {
-            public int Number { get; }
+            public T Item { get; }
 
-            public NumberAddedEventArgs(int number) => Number = number;
+            public ItemAddedEventArgs(T number) => Item = number;
         }
 
-        private event EventHandler<NumberAddedEventArgs> NumberAdded;
+        private event EventHandler<ItemAddedEventArgs<TItem>> ItemAdded;
 
-        public IObservable<int> NumbersAdded { get; }
+        public IObservable<TItem> ItemsAdded { get; }
 
         public Repository()
         {
-            var numbersAddedObservable = Observable.FromEventPattern<NumberAddedEventArgs>(
-                handler => NumberAdded += handler,
-                handler => NumberAdded -= handler);
+            var itemsAddedObservable = Observable.FromEventPattern<ItemAddedEventArgs<TItem>>(
+                handler => ItemAdded += handler,
+                handler => ItemAdded -= handler);
 
-            NumbersAdded = numbersAddedObservable
-                .Select(args => args.EventArgs.Number)
+            ItemsAdded = itemsAddedObservable
+                .Select(args => args.EventArgs.Item)
                 .Publish()
                 .RefCount();
         }
 
-        private IList<int> _underlyingCollection = new List<int>();
+        private IList<TItem> _underlyingCollection = new List<TItem>();
 
-        public void Add(int number)
+        public void Add(TItem item)
         {
-            _underlyingCollection.Add(number);
-            NumberAdded?.Invoke(this, new NumberAddedEventArgs(number));
+            _underlyingCollection.Add(item);
+            ItemAdded?.Invoke(this, new ItemAddedEventArgs<TItem>(item));
         }
     }
 
     class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
-            var repository = new Repository();
+            // IntegerRepositoryDemo();
+            DateRepositoryDemo();
 
-            var groupedNumbers = repository.NumbersAdded
+            Console.ReadKey();
+        }
+
+        private static void IntegerRepositoryDemo()
+        {
+            var repository = new Repository<int>();
+
+            var groupedNumbers = repository.ItemsAdded
                 .GroupBy(number => number % 3)
-                .Select(numberGroup => 
+                .Select(numberGroup =>
                     numberGroup.Scan(
                         (Group: numberGroup.Key, Numbers: new List<int>()),
                         (state, number) => { state.Numbers.Add(number); return (state.Group, state.Numbers); }))
@@ -69,7 +77,47 @@ namespace ObservableDemo
                 repository.Add(i);
             }
 
-            Console.ReadKey();
+            subscription.Dispose();
+        }
+
+        private static void DateRepositoryDemo()
+        {
+            var repository = new Repository<DateTime>();
+
+            var groupedDateTimes = repository.ItemsAdded
+                .GroupBy(date => date.Date)
+                .Select(dateGroup =>
+                    dateGroup.Scan(
+                        (Group: dateGroup.Key, Dates: new List<DateTime>()),
+                        (state, date) => { state.Dates.Add(date); return (state.Group, state.Dates); }))
+                .Merge();
+
+            var subscription = groupedDateTimes
+                .Subscribe(dateListGroup =>
+                {
+                    Console.Write($"Group: {dateListGroup.Group}, Dates: ");
+                    foreach (DateTime date in dateListGroup.Dates)
+                    {
+                        Console.Write($"<{date.Day}-{date.Month}-{date.Year} {date.Hour}:{date.Minute}:{date.Hour}>, ");
+                    }
+                    Console.WriteLine();
+                });
+
+            DateTime[] dates = new DateTime[]
+            {
+                new DateTime(2020, 12, 07),
+                new DateTime(2020, 12, 08),
+                new DateTime(2020, 12, 09),
+            };
+
+            for (int i = 0; i < 15; i++)
+            {
+                var date = dates[i % 3];
+                var dateWithDifferentTime = new DateTime(date.Year, date.Month, date.Day, 10, i, 10);
+
+                repository.Add(dateWithDifferentTime);
+            }
+
             subscription.Dispose();
         }
     }
