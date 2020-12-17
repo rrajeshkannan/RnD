@@ -1,4 +1,5 @@
-﻿using JsonSerializeDeserializeDemo.TimeOfTravel;
+﻿using JsonSerializeDeserializeDemo.Cap;
+using JsonSerializeDeserializeDemo.TimeOfTravel;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -56,8 +57,8 @@ namespace JsonSerializeDeserializeDemo
 
             //return;
 
-            //var Zone1 = new Zone(1, "1");
-            //var Zone2 = new Zone(2, "2");
+            var Zone1 = new Zone(1, "1");
+            var Zone2 = new Zone(2, "2");
             //var intraZoneFare1 = new IntraZoneFare(1, Zone1, 30, 25);
             //var intraZoneFare2 = new IntraZoneFare(2, Zone2, 25, 20);
             //var interZoneFare1 = new InterZoneFare(3, Zone1, Zone2, 35, 30);
@@ -108,11 +109,47 @@ namespace JsonSerializeDeserializeDemo
             //jsonString = JsonSerializer.Serialize(weekendPeakHours, options);
             //File.WriteAllText("peakHours.weekend.json", jsonString);
 
-            var jsonString = File.ReadAllText("peakHours.weekday.json");
-            var weekdayPeakHoursRead = JsonSerializer.Deserialize<TimePeriod[]>(jsonString, options);
-            
-            jsonString = File.ReadAllText("peakHours.weekend.json");
-            var weekendPeakHoursRead = JsonSerializer.Deserialize<TimePeriod[]>(jsonString, options);
+            //var jsonString = File.ReadAllText("peakHours.weekday.json");
+            //var weekdayPeakHoursRead = JsonSerializer.Deserialize<TimePeriod[]>(jsonString, options);
+
+            //jsonString = File.ReadAllText("peakHours.weekend.json");
+            //var weekendPeakHoursRead = JsonSerializer.Deserialize<TimePeriod[]>(jsonString, options);
+
+            // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+            //var intraZoneCaps = new List<IntraZoneCap>
+            //{
+            //    new IntraZoneCap(1, CapKind.Daily, Zone1, 100m),
+            //    new IntraZoneCap(2, CapKind.Daily, Zone2, 80m),
+            //    new IntraZoneCap(1, CapKind.Weekly, Zone1, 500m),
+            //    new IntraZoneCap(2, CapKind.Weekly, Zone2, 400m),
+            //};
+
+            //var jsonString = JsonSerializer.Serialize(intraZoneCaps, options);
+            //File.WriteAllText("Caps.IntraZone.json", jsonString);
+
+            //var interZoneCaps = new List<InterZoneCap>
+            //{
+            //    new InterZoneCap(1, CapKind.Daily, Zone1, Zone2, 120m),
+            //    new InterZoneCap(1, CapKind.Daily, Zone2, Zone1, 120m),
+            //    new InterZoneCap(1, CapKind.Weekly, Zone1, Zone2, 600m),
+            //    new InterZoneCap(1, CapKind.Weekly, Zone2, Zone1, 600m),
+            //};
+
+            //jsonString = JsonSerializer.Serialize(interZoneCaps, options);
+            //File.WriteAllText("Caps.InterZone.json", jsonString);
+
+            var jsonString = File.ReadAllText("Caps.IntraZone.json");
+            var intraZoneCapsRead = JsonSerializer.Deserialize<IntraZoneCap[]>(jsonString, options);
+
+            jsonString = File.ReadAllText("Caps.InterZone.json");
+            var interZoneCapsRead = JsonSerializer.Deserialize<InterZoneCap[]>(jsonString, options);
+
+            //jsonString = File.ReadAllText("WeeklyCaps.IntraZone.json");
+            //var intraZoneWeeklyCapsRead = JsonSerializer.Deserialize<IntraZoneWeeklyCap[]>(jsonString, options);
+
+            //jsonString = File.ReadAllText("WeeklyCaps.InterZone.json");
+            //var interZoneWeeklyCapsRead = JsonSerializer.Deserialize<InterZoneWeeklyCap[]>(jsonString, options);
 
             // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
         }

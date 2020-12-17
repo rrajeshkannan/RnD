@@ -71,6 +71,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Cap\CapKind.cs" />
+    <Compile Include="Cap\InterZoneCap.cs" />
+    <Compile Include="Cap\IntraZoneCap.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RouteMap\Zone.cs" />
