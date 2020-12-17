@@ -1,4 +1,5 @@
 ﻿using Autofac;
+using System;
 
 namespace DependencyInjectionDemo
 {
@@ -19,6 +20,8 @@ namespace DependencyInjectionDemo
                 var app = scope.Resolve<IApplication>();
                 app.Run();
             }
+
+            Console.ReadKey();
         }
     }
 }

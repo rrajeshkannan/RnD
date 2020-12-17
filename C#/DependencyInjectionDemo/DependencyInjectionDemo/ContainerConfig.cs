@@ -9,7 +9,7 @@ namespace DependencyInjectionDemo
         {
             var builder = new ContainerBuilder();
 
-            builder.RegisterModule<MyModule>();
+            builder.RegisterModule<DependencyInjectionModule.Module>();
 
             builder.RegisterType<Application>().As<IApplication>();
 

@@ -2,7 +2,7 @@
 
 namespace DependencyInjectionModule
 {
-    public class MyModule : Module
+    public class Module : Autofac.Module
     {
         protected override void Load(ContainerBuilder builder)
         {
@@ -12,6 +12,9 @@ namespace DependencyInjectionModule
             builder.RegisterType<TodayWriterService>().As<IDateWriterService>();
             
             builder.RegisterGeneric(typeof(Repository<>)).As(typeof(IRepository<>)).InstancePerLifetimeScope();
+            builder.RegisterType<WorkingMemory>().As(typeof(IWorkingMemory)).InstancePerLifetimeScope();
+
+            builder.RegisterType<Session>().As<ISession>().InstancePerLifetimeScope();
         }
     }
 }

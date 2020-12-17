@@ -4,16 +4,15 @@ namespace DependencyInjectionDemo
 {
     public class Application : IApplication
     {
-        private readonly IDateWriterService _dateWriter;
+        private readonly ISession _session;
 
-        public Application(IDateWriterService dateWriter)
-        {
-            _dateWriter = dateWriter;
-        }
+        public Application(ISession session)
+            => _session = session;
 
         public void Run()
         {
-            _dateWriter.WriteDate();
+            _session.WriteDate();
+            _session.Add(new MyFact(1));
         }
     }
 }

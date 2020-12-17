@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Autofac;
+using System;
 using System.Collections.Generic;
 
 namespace DependencyInjectionModule
@@ -6,6 +7,10 @@ namespace DependencyInjectionModule
     internal class Repository<TFact> : IRepository<TFact> where TFact : Fact
     {
         private readonly Dictionary<Int64, TFact> _underlyingCollection = new Dictionary<Int64, TFact>();
+
+        public Repository()
+        {
+        }
 
         public void Add(TFact fact)
         {

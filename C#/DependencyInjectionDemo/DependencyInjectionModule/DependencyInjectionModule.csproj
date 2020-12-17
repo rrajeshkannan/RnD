@@ -68,15 +68,18 @@
   <ItemGroup>
     <Compile Include="ConsoleOutputService.cs" />
     <Compile Include="Fact.cs" />
-    <Compile Include="Fact1.cs" />
-    <Compile Include="Fact2.cs" />
     <Compile Include="IRepository.cs" />
-    <Compile Include="MyModule.cs" />
+    <Compile Include="ISession.cs" />
+    <Compile Include="IWorkingMemory.cs" />
+    <Compile Include="Module.cs" />
     <Compile Include="IDateWriterService.cs" />
     <Compile Include="IOutputService.cs" />
+    <Compile Include="MyFact.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository.cs" />
+    <Compile Include="Session.cs" />
     <Compile Include="TodayWriterService.cs" />
+    <Compile Include="WorkingMemory.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
