@@ -11,22 +11,22 @@ namespace DependencyInjectionModule
 {
     public static class RuleAssemblyExtensions
     {
-        public static void RegisterRepositoryForFactType<TFact>(this ContainerBuilder builder) where TFact : Fact
-        {
-            //builder.RegisterType<Repository<TFact>>()
-            //    .AsSelf()
-            //    .As<IRepository<TFact>>()
-            //    .As<IRepository>()
-            //    .IfNotRegistered(typeof(Repository<TFact>))
-            //    .InstancePerLifetimeScope();
+        //public static void RegisterRepositoryForFactType<TFact>(this ContainerBuilder builder) where TFact : Fact
+        //{
+        //    //builder.RegisterType<Repository<TFact>>()
+        //    //    .AsSelf()
+        //    //    .As<IRepository<TFact>>()
+        //    //    .As<IRepository>()
+        //    //    .IfNotRegistered(typeof(Repository<TFact>))
+        //    //    .InstancePerLifetimeScope();
 
-            builder.RegisterType(typeof(Repository<TFact>))
-                .AsSelf()
-                .As(typeof(IRepository<TFact>))
-                .As(typeof(IRepository))
-                .IfNotRegistered(typeof(Repository<TFact>))
-                .InstancePerLifetimeScope();
-        }
+        //    builder.RegisterType(typeof(Repository<TFact>))
+        //        .AsSelf()
+        //        .As(typeof(IRepository<TFact>))
+        //        .As(typeof(IRepository))
+        //        .IfNotRegistered(typeof(Repository<TFact>))
+        //        .InstancePerLifetimeScope();
+        //}
 
         public static void RegisterFactsFromAssembly(this ContainerBuilder builder, Assembly assembly)
         {
@@ -40,8 +40,7 @@ namespace DependencyInjectionModule
                 Type interfaceRepository = typeof(IRepository<>).MakeGenericType(factType);
 
                 builder.RegisterType(concreteRepository)
-                    //.AsSelf()
-                    .As(concreteRepository)
+                    .AsSelf() // equivalent to -> .As(concreteRepository)
                     .As(interfaceRepository)
                     .As(typeof(IRepository))
                     .IfNotRegistered(concreteRepository)
@@ -52,21 +51,8 @@ namespace DependencyInjectionModule
         private static bool IsFactType(TypeInfo typeInfo)
         {
             return
-                IsConcreteType() &&
-                IsDerivedFromFactType();
-
-            bool IsConcreteType()
-            {
-                return !typeInfo.IsAbstract &&
-                    !typeInfo.IsInterface &&
-                    !typeInfo.IsGenericTypeDefinition;
-            }
-
-            bool IsDerivedFromFactType()
-            {
-                var ruleType = typeof(Fact).GetTypeInfo();
-                return ruleType.IsAssignableFrom(typeInfo);
-            }
+                typeInfo.IsConcreteType() &&
+                typeInfo.IsDerivedFrom<Fact>();
         }
     }
 }

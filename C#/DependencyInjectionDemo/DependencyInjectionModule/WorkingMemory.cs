@@ -20,17 +20,6 @@ namespace DependencyInjectionModule
 
             _repositories = repositories.ToDictionary(
                 repository => GetFactTypeFrom(repository.GetType()));
-            
-            //foreach (var repository in repositories)
-            //{
-            //    var factType = repository.GetType()
-            //        .GetInterfaces()
-            //        .Where(x => x.IsGenericType && x.GetGenericTypeDefinition() == typeof(IRepository<>))
-            //        .Select(repositoryFactType => repositoryFactType.GetGenericArguments()[0])
-            //        .First();
-
-            //    _repositories.Add(factType, repository);
-            //}
         }
 
         private static Type GetFactTypeFrom(Type repositoryType)
@@ -38,12 +27,19 @@ namespace DependencyInjectionModule
             return repositoryType.GetInterfaces()
                 .Where(x => x.IsGenericType && x.GetGenericTypeDefinition() == typeof(IRepository<>))
                 .SelectMany(repositoryFactType => repositoryFactType.GetGenericArguments())
-                .First();
+                .First(factType => factType.IsConcreteType() && factType.IsDerivedFrom<Fact>());
         }
 
         public IRepository<TFact> Repository<TFact>() where TFact : Fact
         {
-            return _container.Resolve<IRepository<TFact>>();
+            if (!_repositories.TryGetValue(typeof(TFact), out IRepository repositoryGeneric))
+            {
+                throw new InvalidOperationException();
+            }
+
+            return repositoryGeneric as IRepository<TFact>;
+
+            //return _container.Resolve<IRepository<TFact>>();
         }
 
         //public void Add<TFact>(TFact fact) where TFact : Fact
