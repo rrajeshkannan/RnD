@@ -1,6 +1,7 @@
-﻿using System;
+﻿using DependencyInjection.Domain;
+using System;
 
-namespace DependencyInjectionModule
+namespace CustomModule.Domain
 {
     public class MyFact : Fact
     {

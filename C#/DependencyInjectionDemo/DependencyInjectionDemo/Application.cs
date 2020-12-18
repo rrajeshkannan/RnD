@@ -1,4 +1,5 @@
-﻿using DependencyInjectionModule;
+﻿using CustomModule.Domain;
+using DependencyInjectionModule;
 
 namespace DependencyInjectionDemo
 {

@@ -1,4 +1,6 @@
-﻿namespace DependencyInjectionModule
+﻿using DependencyInjection.Domain;
+
+namespace DependencyInjectionModule
 {
     public interface IWorkingMemory
     {

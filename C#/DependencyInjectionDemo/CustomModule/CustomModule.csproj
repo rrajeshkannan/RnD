@@ -4,17 +4,16 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{E64A0013-74E2-47BF-AF9C-5FB1073AE2FF}</ProjectGuid>
-    <OutputType>Exe</OutputType>
-    <RootNamespace>DependencyInjectionDemo</RootNamespace>
-    <AssemblyName>DependencyInjectionDemo</AssemblyName>
+    <ProjectGuid>{AB2134D7-48EF-4080-B495-3B6E87BA4AD2}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>CustomModule</RootNamespace>
+    <AssemblyName>CustomModule</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -24,7 +23,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -68,24 +66,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Application.cs" />
-    <Compile Include="ContainerConfig.cs" />
-    <Compile Include="IApplication.cs" />
-    <Compile Include="Program.cs" />
+    <Compile Include="Module.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
-    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CustomModule.Domain\CustomModule.Domain.csproj">
       <Project>{50fb1588-dcba-4f06-a3cb-a0fb3784285a}</Project>
       <Name>CustomModule.Domain</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\CustomModule\CustomModule.csproj">
-      <Project>{ab2134d7-48ef-4080-b495-3b6e87ba4ad2}</Project>
-      <Name>CustomModule</Name>
     </ProjectReference>
     <ProjectReference Include="..\DependencyInjection.Domain\DependencyInjection.Domain.csproj">
       <Project>{ec76eb3c-d767-4ce3-b0bc-eaa43cd59424}</Project>
@@ -95,6 +82,10 @@
       <Project>{c3dfc2e3-7a84-4420-8a36-6d4c3f709bfe}</Project>
       <Name>DependencyInjectionModule</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -1,4 +1,4 @@
-﻿using Autofac;
+﻿using DependencyInjection.Domain;
 using System;
 using System.Collections.Generic;
 

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace DependencyInjectionModule
+namespace DependencyInjection.Domain
 {
     public abstract class Fact
     {

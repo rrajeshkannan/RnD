@@ -1,11 +1,6 @@
-﻿using System;
-
-namespace DependencyInjectionModule
+﻿namespace DependencyInjectionModule
 {
-    public interface IRepository<TFact> where TFact : Fact
+    public interface IRepository
     {
-        void Add(TFact fact);
-
-        TFact Get(Int64 id);
     }
 }

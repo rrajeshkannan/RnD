@@ -1,4 +1,6 @@
-﻿namespace DependencyInjectionModule
+﻿using DependencyInjection.Domain;
+
+namespace DependencyInjectionModule
 {
     internal class Session : ISession
     {
