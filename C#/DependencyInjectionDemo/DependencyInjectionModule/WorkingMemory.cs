@@ -8,15 +8,15 @@ namespace DependencyInjectionModule
 {
     public class WorkingMemory : IWorkingMemory
     {
-        private readonly IComponentContext _container;
+        //private readonly IComponentContext _container;
 
         private readonly IDictionary<Type, IRepository> _repositories;// = new Dictionary<Type, IRepository>();
 
         public WorkingMemory(
-            IComponentContext container,
+            //IComponentContext container,
             IEnumerable<IRepository> repositories)
         {
-            _container = container;
+            //_container = container;
 
             _repositories = repositories.ToDictionary(
                 repository => GetFactTypeFrom(repository.GetType()));
