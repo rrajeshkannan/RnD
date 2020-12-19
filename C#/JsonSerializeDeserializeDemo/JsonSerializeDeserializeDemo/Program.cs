@@ -33,10 +33,13 @@ namespace JsonSerializeDeserializeDemo
     {
         static void Main()
         {
+
+
             var options = new JsonSerializerOptions
             {
                 //IgnoreReadOnlyProperties = false,
-                WriteIndented = true
+                WriteIndented = true,
+                Converters = { new JsonStringEnumConverter() }
             };
 
             //string json = @"{""Date"":""2020-10-23T09:51:03.8702889-07:00"",""TemperatureC"":40,""Summary"":""Hot""}";
@@ -93,27 +96,17 @@ namespace JsonSerializeDeserializeDemo
 
             //var weekdayPeakHours = new List<TimePeriod>
             //{
-            //    new TimePeriod(1, (07, 00, 00), (10, 30, 00)),
-            //    new TimePeriod(2, (17, 00, 00), (20, 00, 00))
+            //    new TimePeriod(1, new TimePeriod.SimpleTime (07, 00, 00), new TimePeriod.SimpleTime (10, 30, 00), DayKind.Weekday),
+            //    new TimePeriod(2, new TimePeriod.SimpleTime (17, 00, 00), new TimePeriod.SimpleTime (20, 00, 00), DayKind.Weekday),
+            //    new TimePeriod(3, new TimePeriod.SimpleTime (09, 00, 00), new TimePeriod.SimpleTime (11, 00, 00), DayKind.Weekend),
+            //    new TimePeriod(4, new TimePeriod.SimpleTime (18, 00, 00), new TimePeriod.SimpleTime (22, 00, 00), DayKind.Weekend)
             //};
 
             //var jsonString = JsonSerializer.Serialize(weekdayPeakHours, options);
-            //File.WriteAllText("peakHours.weekday.json", jsonString);
+            //File.WriteAllText("peakHours.json", jsonString);
 
-            //var weekendPeakHours = new List<TimePeriod>
-            //{
-            //    new TimePeriod(1, (09, 00, 00), (11, 30, 00)),
-            //    new TimePeriod(2, (18, 00, 00), (22, 00, 00))
-            //};
-
-            //jsonString = JsonSerializer.Serialize(weekendPeakHours, options);
-            //File.WriteAllText("peakHours.weekend.json", jsonString);
-
-            //var jsonString = File.ReadAllText("peakHours.weekday.json");
-            //var weekdayPeakHoursRead = JsonSerializer.Deserialize<TimePeriod[]>(jsonString, options);
-
-            //jsonString = File.ReadAllText("peakHours.weekend.json");
-            //var weekendPeakHoursRead = JsonSerializer.Deserialize<TimePeriod[]>(jsonString, options);
+            var jsonString = File.ReadAllText("peakHours.json");
+            var peakHoursRead = JsonSerializer.Deserialize<TimePeriod[]>(jsonString, options);
 
             // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 
@@ -139,11 +132,11 @@ namespace JsonSerializeDeserializeDemo
             //jsonString = JsonSerializer.Serialize(interZoneCaps, options);
             //File.WriteAllText("Caps.InterZone.json", jsonString);
 
-            var jsonString = File.ReadAllText("Caps.IntraZone.json");
-            var intraZoneCapsRead = JsonSerializer.Deserialize<IntraZoneCap[]>(jsonString, options);
+            //var jsonString = File.ReadAllText("Caps.IntraZone.json");
+            //var intraZoneCapsRead = JsonSerializer.Deserialize<IntraZoneCap[]>(jsonString, options);
 
-            jsonString = File.ReadAllText("Caps.InterZone.json");
-            var interZoneCapsRead = JsonSerializer.Deserialize<InterZoneCap[]>(jsonString, options);
+            //jsonString = File.ReadAllText("Caps.InterZone.json");
+            //var interZoneCapsRead = JsonSerializer.Deserialize<InterZoneCap[]>(jsonString, options);
 
             //jsonString = File.ReadAllText("WeeklyCaps.IntraZone.json");
             //var intraZoneWeeklyCapsRead = JsonSerializer.Deserialize<IntraZoneWeeklyCap[]>(jsonString, options);

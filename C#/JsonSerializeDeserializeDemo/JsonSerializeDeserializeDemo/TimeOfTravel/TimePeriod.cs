@@ -2,6 +2,12 @@
 
 namespace JsonSerializeDeserializeDemo.TimeOfTravel
 {
+    public enum DayKind
+    {
+        Weekday,
+        Weekend
+    }
+
     public class TimePeriod
     {
         public Int64 Id { get; }
@@ -10,14 +16,16 @@ namespace JsonSerializeDeserializeDemo.TimeOfTravel
 
         public SimpleTime End { get; }
 
-        public TimePeriod(Int64 id, SimpleTime begin, SimpleTime end)
-            => (Id, Begin, End) = (id, begin, end);
+        public DayKind DayKind { get; }
+
+        public TimePeriod(Int64 id, SimpleTime begin, SimpleTime end, DayKind dayKind)
+            => (Id, Begin, End, DayKind) = (id, begin, end, dayKind);
 
         #region Model identities
 
         public override int GetHashCode() => (int)Id;
 
-        public override string ToString() => $"[{Id}]<Begin:{Begin},End:{End}>";
+        public override string ToString() => $"[{Id}]<Begin:{Begin},End:{End},Kind:{DayKind}>";
 
         #endregion
 
