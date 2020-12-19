@@ -20,25 +20,41 @@ namespace ObservableDemo
             });
         }
 
-        public static IObservable<TSource> DetourOn<TSource>(
+        //public static IObservable<TSource> DivertOn<TSource>(
+        //    this IObservable<TSource> source,
+        //    Func<TSource, bool> predicate, 
+        //    out IObservable<TSource> diverted)
+        //{
+        //    var subject = new Subject<TSource>();
+        //    diverted = subject;
+
+        //    return source.SelectMany(x =>
+        //    {
+        //        var passed = predicate(x);
+
+        //        if (passed)
+        //        {
+        //            subject.OnNext(x);
+        //            return Observable.Empty(x);
+        //        }
+
+        //        return Observable.Return(x);
+        //    });
+        //}
+
+        public static IObservable<TSource> Divert<TSource>(
             this IObservable<TSource> source,
-            Func<TSource, bool> predicate, out IObservable<TSource> detoured)
+            Func<TSource, bool> predicate,
+            out IObservable<TSource> diverted)
         {
-            var subject = new Subject<TSource>();
-            detoured = subject;
+            var diverting = new Subject<TSource>();
+            diverted = diverting.Publish().RefCount();
 
-            return source.SelectMany(x =>
-            {
-                var passed = predicate(x);
-
-                if (passed)
-                {
-                    subject.OnNext(x);
-                    return Observable.Empty(x);
-                }
-
-                return Observable.Return(x);
-            });
+            return Observable.Create<TSource>(observer => source.Subscribe(
+                x => (predicate(x) ? diverting : observer).OnNext(x),
+                ex => { diverting.OnError(ex); observer.OnError(ex); },
+                () => { diverting.OnCompleted(); observer.OnCompleted(); })
+            ).Publish().RefCount();
         }
 
         public static IObservable<TSource> If<TSource>(
@@ -105,15 +121,15 @@ namespace ObservableDemo
                 o.OnCompleted));
         }
 
-        //public static IObservable<TResult> Switch<TResult, TSource>(
-        //    this IObservable<TSource> source,
-        //    IEnumerable<Func<IObservable<TSource>, IObservable<TResult>>> resultSelectors)
-        //{
-        //    var sequences = resultSelectors.ToObservable()
-        //        .Select(resultSelector => resultSelector(source));
+        public static IObservable<TResult> Switch<TResult, TSource>(
+            this IObservable<TSource> source,
+            IEnumerable<Func<IObservable<TSource>, IObservable<TResult>>> resultSelectors)
+        {
+            var sequences = resultSelectors.ToObservable()
+                .Select(resultSelector => resultSelector(source));
 
-        //    return sequences.Switch();
-        //}
+            return sequences.Switch();
+        }
 
 
     }

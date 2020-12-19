@@ -10,12 +10,51 @@ namespace ObservableDemo
         public static void Run()
         {
             //ChainedObservable();
-            //DetouredObservable();
+            DetouredObservable1();
+            //DetouredObservable2();
             //IfObservable1();
             //IfObservable2();
             //IfObservable3();
             //SwitchObservable();
-            MapConditionalObservable();
+            //MapConditionalObservable();
+        }
+
+        private static void DetouredObservable1()
+        {
+            var numberSequence = new Subject<int>();
+
+            var leftovers = numberSequence
+                .Divert(number => number % 2 == 0, out var multiplesOfTwo)
+                .Divert(number => number % 3 == 0, out var multiplesOfThree);
+
+            var subscription1 = leftovers
+                .Select(number => number * 10)
+                .Subscribe(Console.WriteLine);
+
+            var subscription2 = multiplesOfTwo
+                .Select(number => number * 100)
+                .Subscribe(Console.WriteLine);
+
+            var subscription3 = multiplesOfThree
+                .Select(number => number * 1000)
+                .Subscribe(Console.WriteLine);
+
+            for (int i = 1; i < 20; i++)
+            {
+                numberSequence.OnNext(i);
+            }
+
+            numberSequence.OnCompleted();
+        }
+
+        private static void DetouredObservable2()
+        {
+            //var numberSequence = Observable.Range(0, 10);
+
+            //var detouredSequence = numberSequence
+            //    .DetourOn(number => number % 2 == 0)
+            //    .Where(detouredGroup => detouredGroup.Key)
+            //    .Select(detouredGroup => );
         }
 
         private static void MapConditionalObservable()
@@ -109,16 +148,6 @@ namespace ObservableDemo
 
             var disposable = ifNumberSequence
                 .Subscribe(number => Console.WriteLine($"Number: {number}"));
-        }
-
-        private static void DetouredObservable()
-        {
-            //var numberSequence = Observable.Range(0, 10);
-
-            //var detouredSequence = numberSequence
-            //    .DetourOn(number => number % 2 == 0)
-            //    .Where(detouredGroup => detouredGroup.Key)
-            //    .Select(detouredGroup => );
         }
 
         private static void ChainedObservable()
