@@ -9,15 +9,19 @@ namespace ObservableDemo
 {
     public static class ObservableExtensions
     {
-        public static IObservable<TSource> Chain<TSource>(
+        public static IObservable<TSource> Divert<TSource>(
             this IObservable<TSource> source,
-            List<Func<TSource, bool>> handlerList)
+            Func<TSource, bool> predicate,
+            out IObservable<TSource> diverted)
         {
-            return source.SelectMany(x =>
-            {
-                var passedHandler = handlerList.FirstOrDefault(handler => handler(x) == true);
-                return passedHandler == null ? Observable.Return(x) : Observable.Empty(x);
-            });
+            var diverting = new Subject<TSource>();
+            diverted = diverting.Publish().RefCount();
+
+            return Observable.Create<TSource>(observer => source.Subscribe(
+                x => (predicate(x) ? diverting : observer).OnNext(x),
+                ex => { diverting.OnError(ex); observer.OnError(ex); },
+                () => { diverting.OnCompleted(); observer.OnCompleted(); })
+            ).Publish().RefCount();
         }
 
         //public static IObservable<TSource> DivertOn<TSource>(
@@ -42,19 +46,15 @@ namespace ObservableDemo
         //    });
         //}
 
-        public static IObservable<TSource> Divert<TSource>(
+        public static IObservable<TSource> Chain<TSource>(
             this IObservable<TSource> source,
-            Func<TSource, bool> predicate,
-            out IObservable<TSource> diverted)
+            List<Func<TSource, bool>> handlerList)
         {
-            var diverting = new Subject<TSource>();
-            diverted = diverting.Publish().RefCount();
-
-            return Observable.Create<TSource>(observer => source.Subscribe(
-                x => (predicate(x) ? diverting : observer).OnNext(x),
-                ex => { diverting.OnError(ex); observer.OnError(ex); },
-                () => { diverting.OnCompleted(); observer.OnCompleted(); })
-            ).Publish().RefCount();
+            return source.SelectMany(x =>
+            {
+                var passedHandler = handlerList.FirstOrDefault(handler => handler(x) == true);
+                return passedHandler == null ? Observable.Return(x) : Observable.Empty(x);
+            });
         }
 
         public static IObservable<TSource> If<TSource>(
