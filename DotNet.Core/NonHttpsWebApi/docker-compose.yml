@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  nonhttpswebapi:
+    image: ${DOCKER_REGISTRY-}nonhttpswebapi
+    build:
+      context: .
+      dockerfile: Dockerfile
